@@ -39,8 +39,4 @@ Here:
 	va_end(args);
 	return (length);
 }
-int main(void)
-{
-	_printf("hello, %s! the answer is %c", "world", 42);
-	return 0;
-}
+
