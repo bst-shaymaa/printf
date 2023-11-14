@@ -47,7 +47,6 @@ int _printf(char *format, ...)
 	va_end(arg);
 	return ((int) count);
 }
-
 /**
  * _printf_list - prints
  * @val: the variable list
@@ -58,15 +57,11 @@ int _printf(char *format, ...)
 int _printf_list(va_list val, char ch, unsigned int *p_i)
 {
 	unsigned int *p_i_count = p_i;
-	int count = 0;
+	int count = 0, tempNum;
 	char *strTemp;
 
 	switch (ch)
 	{
-		case 'c':
-			count += print_c(va_arg(val, int));
-			*p_i_count = *p_i_count + 1;
-			break;
 		case 'z':
 			count += print_c('%');
 			*p_i_count = *p_i_count + 1;
@@ -77,6 +72,21 @@ int _printf_list(va_list val, char ch, unsigned int *p_i)
 				count += print_s("(null)");
 			else
 				count += print_s(strTemp);
+			*p_i_count = *p_i_count + 1;
+			break;
+		case 'r':
+			strTemp = va_arg(val, char *);
+			if (strTemp == NULL)
+				count += print_s("(null)");
+			else
+				count += sr_print(strTemp);
+			*p_i_count = *p_i_count + 1;
+			break;
+		case 'd':
+		case 'i':
+			tempNum = va_arg(val, int);
+			id_print(tempNum);
+			count += count_int(tempNum);
 			*p_i_count = *p_i_count + 1;
 			break;
 		default:
