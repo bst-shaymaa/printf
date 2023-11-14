@@ -12,7 +12,10 @@ int _putchar(char c);
 int print_c(int character);
 int print_s(char *str);
 int print_p(void);
+int sr_print(char *str);
 int _printf(char *format, ...);
-
+void id_print(int n);
+int count_int(int n);
 #endif
+
 
