@@ -1,42 +1,89 @@
 #include "main.h"
+#include <stdio.h>
 /**
- * _printf - is a function that selects the correct function to print.
- * @format: identifier to look for.
- * Return: the length of the string.
+ * _printf - prints anything
+ * @format: the string to print
+ * Return: an integer
  */
-int _printf(const char * const format, ...)
+int _printf(char *format, ...)
 {
-	convert p[] = {
-		{"%s", print_s}, {"%c", print_c},
-		{"%%", print_37},
-	};
+	unsigned int i = 0, count = 0;
+	unsigned int *p_i = &i;
+	va_list arg;
 
-	va_list args;
-	int i = 0, j, length = 0;
-
-	va_start(args, format);
-	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
-		return (-1);
-
-Here:
-	while (format[i] != '\0')
+	va_start(arg, format);
+	if (format == NULL)
 	{
-		j = 13;
-		while (j >= 0)
-		{
-			if (p[j].ph[0] == format[i] && p[j].ph[1] == format[i + 1])
-			{
-				length += p[j].function(args);
-				i = i + 2;
-				goto Here;
-			}
-			j--;
-		}
-		_putchar(format[i]);
-		length++;
-		i++;
+		va_end(arg);
+		return (-1);
 	}
-	va_end(args);
-	return (length);
+	for (i = 0; format[i] != '\0'; i++)
+	{
+		if (format[i] == '%')
+		{
+			switch (format[i + 1])
+			{
+			case '\0':
+				va_end(arg);
+				return (-1);
+			case '%':
+				count += print_p();
+				i++;
+				break;
+			case 'c':
+				count += print_c(va_arg(arg, int));
+				i++;
+				break;
+			default:
+				count += _printf_list(arg, format[i + 1], p_i);
+			}
+		}
+		else
+		{
+			_putchar(format[i]);
+			count++;
+		}
+	}
+	va_end(arg);
+	return ((int) count);
+}
+
+/**
+ * _printf_list - prints
+ * @val: the variable list
+ * @ch: character of the format idx
+ * @p_i: pointer to i
+ * Return: an integer
+ */
+int _printf_list(va_list val, char ch, unsigned int *p_i)
+{
+	unsigned int *p_i_count = p_i;
+	int count = 0;
+	char *strTemp;
+
+	switch (ch)
+	{
+		case 'c':
+			count += print_c(va_arg(val, int));
+			*p_i_count = *p_i_count + 1;
+			break;
+		case 'z':
+			count += print_c('%');
+			*p_i_count = *p_i_count + 1;
+			break;
+		case 's':
+			strTemp = va_arg(val, char *);
+			if (strTemp == NULL)
+				count += print_s("(null)");
+			else
+				count += print_s(strTemp);
+			*p_i_count = *p_i_count + 1;
+			break;
+		default:
+			count += print_c('%');
+			count += print_c(ch);
+			*p_i_count = *p_i_count + 1;
+	}
+	return (count);
 }
 

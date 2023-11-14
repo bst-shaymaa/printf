@@ -2,15 +2,12 @@
 
 /**
  * print_c - prints a character.
- * @val: arguments.
+ * @chara: arguments.
  * Return: integer.
  */
-int print_c(va_list val)
+int print_c(int chara)
 {
-	char s;
-
-	s = va_arg(val, int);
-	_putchar(s);
+	_putchar((char) chara);
 	return (1);
 }
 
