@@ -57,8 +57,7 @@ int _printf(char *format, ...)
 int _printf_list(va_list val, char ch, unsigned int *p_i)
 {
 	unsigned int *p_i_count = p_i;
-	int count = 0, tempNum;
-	char *strTemp;
+	int count = 0;
 
 	switch (ch)
 	{
@@ -67,30 +66,28 @@ int _printf_list(va_list val, char ch, unsigned int *p_i)
 			*p_i_count = *p_i_count + 1;
 			break;
 		case 's':
-			strTemp = va_arg(val, char *);
-			if (strTemp == NULL)
+			if (va_arg(val, char *) == NULL)
 				count += print_s("(null)");
 			else
-				count += print_s(strTemp);
+				count += print_s(va_arg(val, char *));
 			*p_i_count = *p_i_count + 1;
 			break;
 		case 'r':
-			strTemp = va_arg(val, char *);
-			if (strTemp == NULL)
+			if (va_arg(val, char *) == NULL)
 				count += print_s("(null)");
 			else
-				count += sr_print(strTemp);
+				count += sr_print(va_arg(val, char *));
 			*p_i_count = *p_i_count + 1;
 			break;
 		case 'd':
 		case 'i':
-			tempNum = va_arg(val, int);
-			id_print(tempNum);
-			count += count_int(tempNum);
+			id_print(va_arg(val, int));
+			count += count_int(va_arg(val, int));
 			*p_i_count = *p_i_count + 1;
 			break;
 		case 'b':
-			count += print_b(val, p_i_count);
+			count += print_b(va_arg(val, unsigned int));
+			*p_i_count = *p_i_count + 1;
 			break;
 		default:
 			count += print_c('%');
