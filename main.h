@@ -16,6 +16,7 @@ int sr_print(char *str);
 int _printf(char *format, ...);
 void id_print(int n);
 int count_int(int n);
+int print_b(va_list val, unsigned int *p_i);
 #endif
 
 

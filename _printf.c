@@ -89,6 +89,9 @@ int _printf_list(va_list val, char ch, unsigned int *p_i)
 			count += count_int(tempNum);
 			*p_i_count = *p_i_count + 1;
 			break;
+		case 'b':
+			count += print_b(val, p_i_count);
+			break;
 		default:
 			count += print_c('%');
 			count += print_c(ch);
@@ -96,4 +99,3 @@ int _printf_list(va_list val, char ch, unsigned int *p_i)
 	}
 	return (count);
 }
-
